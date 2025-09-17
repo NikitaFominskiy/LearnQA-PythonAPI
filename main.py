@@ -1,32 +1,43 @@
 import requests
+import time
 
-methods = ["", "TRY", "POST","GET","PUT","DELETE", ]
 
-for method in methods:
+status_response = "Job is NOT ready"
+result_response = "Job is ready"
 
-    response = requests.get("https://playground.learnqa.ru/api/compare_query_type", params={'method': f"{method}"})
-    print(f"GET request with parameter 'method' : {method}")
-    print(f"Response code: {response.status_code}")
-    print(f"Response text: {response.text}")
-    print("-----------------")
+response1 = requests.get("https://playground.learnqa.ru/api/longtime_job")
+job_time = response1.json()['seconds']
+job_token = response1.json()['token']
 
-    post_response = requests.post(
-        "https://playground.learnqa.ru/api/compare_query_type", data={'method': f"{method}"})
-    print(f"POST request with parameter 'method' : {method}")
-    print(f"Response code: {post_response.status_code}")
-    print(f"Response text: {post_response.text}")
-    print("-----------------")
+data = {
+    'token': job_token
+}
+response2 = requests.get(
+    "https://playground.learnqa.ru/api/longtime_job",
+     params=data
+    )
+if response2.json()['status'] == status_response:
+    print(f"PASSED! Correct server answer, "
+          f"when job is not ready: {response2.json()['status']}")
+else:
+    print(f"FAILED! Incorrect server answer "
+          f"when jon is not ready: {response2.json()['status']}")
+print(f"Response text: {response2.text}")
 
-    put_response = requests.put(
-        "https://playground.learnqa.ru/api/compare_query_type", data={'method': f"{method}"})
-    print(f"PUT request with parameter 'method' : {method}")
-    print(f"Response code: {put_response.status_code}")
-    print(f"Response text: {put_response.text}")
-    print("-----------------")
+print("------------")
+time.sleep(job_time)
+response3 = requests.get(
+    "https://playground.learnqa.ru/api/longtime_job",
+     params=data
+    )
 
-    delete_response = requests.delete(
-        "https://playground.learnqa.ru/api/compare_query_type", data={'method': f"{method}"})
-    print(f"DELETE request with parameter 'method' : {method}")
-    print(f"Response code: {delete_response.status_code}")
-    print(f"Response text: {delete_response.text}")
-    print("-----------------")
+if response3.json()['status'] == result_response:
+    print(f"PASSED! Correct server answer, "
+          f"when job is ready: {response3.json()['status']}. Job time: {job_time}")
+else:
+    print(f"FAILED! Incorrect server answer "
+          f"when jon is ready: {response3.json()['status']}. Job time: {job_time}")
+print(f"Response text: {response3.text}")
+
+print("------------")
+
