@@ -9,6 +9,7 @@ class TestUserAuth(BaseCase):
         ("no_token")
     ]
 
+    @pytest.fixture(autouse=True)
     def setup(self):
         data = {
             'email': 'vinkotov@example.com',
@@ -35,23 +36,23 @@ class TestUserAuth(BaseCase):
             "User id from auth method is not equal user in from check method"
         )
 
-    # @pytest.mark.parametrize('condition', exclude_params)
-    # def test_negative_auth_check(self, condition):
-    #
-    #     if condition == "no_cookie":
-    #         response2 = requests.get(
-    #             "https://playground.learnqa.ru/api/user/auth",
-    #             headers={"x-csrf-token" : self.token}
-    #         )
-    #     else:
-    #         response2 = requests.get(
-    #             "https://playground.learnqa.ru/api/user/auth",
-    #             cookies={"auth_sid" : self.auth_sid}
-    #         )
-    #
-    #     Assertions.assert_json_value_by_name(
-    #         response2,
-    #         "user_id",
-    #         0,
-    #         f"User is authorized with condition {condition}"
-    #     )
+    @pytest.mark.parametrize('condition', exclude_params)
+    def test_negative_auth_check(self, condition):
+
+        if condition == "no_cookie":
+            response2 = requests.get(
+                "https://playground.learnqa.ru/api/user/auth",
+                headers={"x-csrf-token" : self.token}
+            )
+        else:
+            response2 = requests.get(
+                "https://playground.learnqa.ru/api/user/auth",
+                cookies={"auth_sid" : self.auth_sid}
+            )
+
+        Assertions.assert_json_value_by_name(
+            response2,
+            "user_id",
+            0,
+            f"User is authorized with condition {condition}"
+        )
