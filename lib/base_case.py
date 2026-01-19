@@ -34,3 +34,46 @@ class BaseCase:
             'password': '123',
             'email': email
         }
+
+    def prepare_registration_wrong_email(self, email=None):
+        if email is None:
+            base_part = "learnqa"
+            domain = "example.com"
+            random_part = datetime.now().strftime("%m%d%Y%H%M%S")
+            email = f"{base_part}{random_part}.{domain}"
+        return {
+            'username': 'learnqa',
+            'firstName': 'learnqa',
+            'lastName': 'learnqa',
+            'password': '123',
+            'email': email
+        }
+
+    def prepare_registration_with_short_firstname(self, email=None):
+        if email is None:
+            base_part = "learnqa"
+            domain = "example.com"
+            random_part = datetime.now().strftime("%m%d%Y%H%M%S")
+            email = f"{base_part}{random_part}@{domain}"
+        return {
+            'username': 'learnqa',
+            'firstName': 'l',
+            'lastName': 'learnqa',
+            'password': '123',
+            'email': email
+        }
+
+    def prepare_registration_with_long_firstname(self, email=None, first_name=None):
+        if email is None:
+            base_part = "learnqa"
+            domain = "example.com"
+            random_part = datetime.now().strftime("%m%d%Y%H%M%S")
+            email = f"{base_part}{random_part}@{domain}"
+            first_name = 'A' * 251
+        return {
+            'username': 'learnqa',
+            'firstName': first_name,
+            'lastName': 'learnqa',
+            'password': '123',
+            'email': email
+        }
