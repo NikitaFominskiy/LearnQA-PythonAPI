@@ -1,8 +1,11 @@
 from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
+import allure
 
+@allure.epic("Get user details cases")
 class TestUserGet(BaseCase):
+    @allure.description("Попытка получить данные пользователя, будучи неавторизованным")
     def test_get_user_details_not_auth(self, record_property):
         # Метаданные для отчёта
         record_property("steps", "Попытка получить данные пользователя, будучи неавторизованным")
@@ -15,6 +18,8 @@ class TestUserGet(BaseCase):
         Assertions.assert_json_has_not_key(response, "firstName")
         Assertions.assert_json_has_not_key(response, "lastName")
 
+
+    @allure.description("Попытка получить данные своего пользователя (авторизованны этим пользователем)")
     def test_get_user_details_auth_as_same_user(self, record_property):
         # Метаданные для отчёта
         record_property("steps", "Попытка получить данные своего пользователя (авторизованны этим пользователем)")
@@ -41,6 +46,7 @@ class TestUserGet(BaseCase):
         Assertions.assert_json_has_keys(response2, expected_fields)
 
 
+    @allure.description("Попытка получить данные пользователя, будучи авторизованными другим пользователем")
     def test_get_user_details_auth_as_other_user(self, record_property):
         # Метаданные для отчёта
         record_property("steps", "Попытка получить данные пользователя, будучи авторизованными другим пользователем")

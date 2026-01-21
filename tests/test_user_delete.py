@@ -1,8 +1,11 @@
 from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
+import allure
 
+@allure.epic("Delete user cases")
 class TestUserDelete(BaseCase):
+    @allure.description("Попытка удалить пользователя по ID 2")
     def test_delete_user_id2(self, record_property):
         # Метаданные для отчёта
         record_property("steps", "Попытка удалить пользователя по ID 2")
@@ -29,7 +32,7 @@ class TestUserDelete(BaseCase):
 
         Assertions.assert_code_status(response2, 400)
 
-
+    @allure.description("Создать пользователя, авторизоваться из-под него, удалить, затем попробовать получить его данные по ID")
     def test_delete_user(self, record_property):
         # Метаданные для отчёта
         record_property("steps", "Создать пользователя, авторизоваться из-под него, удалить, затем попробовать получить его данные по ID")
@@ -75,7 +78,7 @@ class TestUserDelete(BaseCase):
 
         Assertions.assert_code_status(response4, 404)
 
-
+    @allure.description("Попытка удалить пользователя, будучи авторизованными другим пользователем")
     def test_delete_other_user(self, record_property):
         # Метаданные для отчёта
         record_property("steps", "Попытка удалить пользователя, будучи авторизованными другим пользователем")

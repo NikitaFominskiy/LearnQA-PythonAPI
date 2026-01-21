@@ -1,8 +1,11 @@
 from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
+import allure
 
+@allure.epic("Edit user cases")
 class TestUserEdit(BaseCase):
+    @allure.description("Попытка изменить имя созданного пользователя")
     def test_edit_just_created_user(self, record_property):
         # Метаданные для отчёта
         record_property("steps", "Попытка изменить имя созданного пользователя")
@@ -57,6 +60,7 @@ class TestUserEdit(BaseCase):
         )
 
 
+    @allure.description("Попытка изменить данные пользователя, будучи неавторизованными")
     def test_edit_user_without_login(self, record_property):
         # Метаданные для отчёта
         record_property("steps", "Попытка изменить данные пользователя, будучи неавторизованными")
@@ -73,6 +77,7 @@ class TestUserEdit(BaseCase):
         Assertions.assert_code_status(response1, 400)
 
 
+    @allure.description("Попытка изменить данные пользователя, будучи авторизованными другим пользователем")
     def test_edit_other_user(self, record_property):
         # Метаданные для отчёта
         record_property("steps", "Попытка изменить данные пользователя, будучи авторизованными другим пользователем")
@@ -113,6 +118,7 @@ class TestUserEdit(BaseCase):
         Assertions.assert_code_status(response3, 400)
 
 
+    @allure.description("Попытка изменить email пользователя, будучи авторизованными тем же пользователем, на новый email без символа @")
     def test_edit_wrong_email(self, record_property):
         # Метаданные для отчёта
         record_property("steps", "Попытка изменить email пользователя, будучи авторизованными тем же пользователем, на новый email без символа @")
@@ -152,6 +158,7 @@ class TestUserEdit(BaseCase):
         Assertions.assert_code_status(response3, 400)
 
 
+    @allure.description("Попытка изменить firstName пользователя, будучи авторизованными тем же пользователем, на очень короткое значение в один символ")
     def test_edit_short_firstname(self, record_property):
         # Метаданные для отчёта
         record_property("steps", "Попытка изменить firstName пользователя, будучи авторизованными тем же пользователем, на очень короткое значение в один символ")
