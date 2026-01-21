@@ -3,7 +3,11 @@ from lib.base_case import BaseCase
 from lib.assertions import Assertions
 
 class TestUserEdit(BaseCase):
-    def test_edit_just_created_user(self):
+    def test_edit_just_created_user(self, record_property):
+        # Метаданные для отчёта
+        record_property("steps", "Попытка изменить имя созданного пользователя")
+        record_property("expected", "Отображается измененное имя")
+
         # REGISTER
         register_data = self.prepare_registration_data()
         response1 = MyRequests.post("/user/", data=register_data)
@@ -53,7 +57,11 @@ class TestUserEdit(BaseCase):
         )
 
 
-    def test_edit_user_without_login(self):
+    def test_edit_user_without_login(self, record_property):
+        # Метаданные для отчёта
+        record_property("steps", "Попытка изменить данные пользователя, будучи неавторизованными")
+        record_property("expected", "Статус 400")
+
         user_id = 5
         # EDIT WITHOUT LOGIN
         new_name = "Changed Name"
@@ -65,7 +73,11 @@ class TestUserEdit(BaseCase):
         Assertions.assert_code_status(response1, 400)
 
 
-    def test_edit_other_user(self):
+    def test_edit_other_user(self, record_property):
+        # Метаданные для отчёта
+        record_property("steps", "Попытка изменить данные пользователя, будучи авторизованными другим пользователем")
+        record_property("expected", "Статус 400, невозможно изменить данные пользователя")
+
         # REGISTER
         register_data = self.prepare_registration_data()
         response1 = MyRequests.post("/user/", data=register_data)
@@ -101,7 +113,11 @@ class TestUserEdit(BaseCase):
         Assertions.assert_code_status(response3, 400)
 
 
-    def test_edit_wrong_email(self):
+    def test_edit_wrong_email(self, record_property):
+        # Метаданные для отчёта
+        record_property("steps", "Попытка изменить email пользователя, будучи авторизованными тем же пользователем, на новый email без символа @")
+        record_property("expected", "Статус 400, введен некорректный email")
+
         # REGISTER
         register_data = self.prepare_registration_data()
         response1 = MyRequests.post("/user/", data=register_data)
@@ -136,7 +152,11 @@ class TestUserEdit(BaseCase):
         Assertions.assert_code_status(response3, 400)
 
 
-    def test_edit_short_firstname(self):
+    def test_edit_short_firstname(self, record_property):
+        # Метаданные для отчёта
+        record_property("steps", "Попытка изменить firstName пользователя, будучи авторизованными тем же пользователем, на очень короткое значение в один символ")
+        record_property("expected", "Статус 400, слишком короткое firstName")
+
         # REGISTER
         register_data = self.prepare_registration_data()
         response1 = MyRequests.post("/user/", data=register_data)

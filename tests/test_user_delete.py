@@ -3,7 +3,10 @@ from lib.base_case import BaseCase
 from lib.assertions import Assertions
 
 class TestUserDelete(BaseCase):
-    def test_delete_user_id2(self):
+    def test_delete_user_id2(self, record_property):
+        # Метаданные для отчёта
+        record_property("steps", "Попытка удалить пользователя по ID 2")
+        record_property("expected", "Статус 400, невозможно удалить пользователя с ID < 6")
 
         # LOGIN
         login_data = {
@@ -27,7 +30,11 @@ class TestUserDelete(BaseCase):
         Assertions.assert_code_status(response2, 400)
 
 
-    def test_delete_user(self):
+    def test_delete_user(self, record_property):
+        # Метаданные для отчёта
+        record_property("steps", "Создать пользователя, авторизоваться из-под него, удалить, затем попробовать получить его данные по ID")
+        record_property("expected", "Статус 400, пользователь действительно удален")
+
         # REGISTER
         register_data = self.prepare_registration_data()
         response1 = MyRequests.post("/user/", data=register_data)
@@ -69,19 +76,11 @@ class TestUserDelete(BaseCase):
         Assertions.assert_code_status(response4, 404)
 
 
+    def test_delete_other_user(self, record_property):
+        # Метаданные для отчёта
+        record_property("steps", "Попытка удалить пользователя, будучи авторизованными другим пользователем")
+        record_property("expected", "Статус 400, невозможно удалить пользователя")
 
-
-
-
-
-
-
-
-
-
-
-
-    def test_delete_other_user(self):
         # REGISTER
         register_data = self.prepare_registration_data()
         response1 = MyRequests.post("/user/", data=register_data)

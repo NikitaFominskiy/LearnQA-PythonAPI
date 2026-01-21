@@ -3,7 +3,11 @@ from lib.base_case import BaseCase
 from lib.assertions import Assertions
 
 class TestUserGet(BaseCase):
-    def test_get_user_details_not_auth(self):
+    def test_get_user_details_not_auth(self, record_property):
+        # Метаданные для отчёта
+        record_property("steps", "Попытка получить данные пользователя, будучи неавторизованным")
+        record_property("expected", "В ответе только 'username' пользователя")
+
         response = MyRequests.get("/user/2")
 
         Assertions.assert_json_has_key(response, "username")
@@ -11,7 +15,11 @@ class TestUserGet(BaseCase):
         Assertions.assert_json_has_not_key(response, "firstName")
         Assertions.assert_json_has_not_key(response, "lastName")
 
-    def test_get_user_details_auth_as_same_user(self):
+    def test_get_user_details_auth_as_same_user(self, record_property):
+        # Метаданные для отчёта
+        record_property("steps", "Попытка получить данные своего пользователя (авторизованны этим пользователем)")
+        record_property("expected", "В ответе возвращаются поля 'username', 'email', 'firstName', 'lastName'")
+
         data = {
             'email': 'vinkotov@example.com',
             'password': '1234'
@@ -33,7 +41,11 @@ class TestUserGet(BaseCase):
         Assertions.assert_json_has_keys(response2, expected_fields)
 
 
-    def test_get_user_details_auth_as_other_user(self):
+    def test_get_user_details_auth_as_other_user(self, record_property):
+        # Метаданные для отчёта
+        record_property("steps", "Попытка получить данные пользователя, будучи авторизованными другим пользователем")
+        record_property("expected", "В ответе только 'username' пользователя")
+
         data = {
             'email': 'vinkotov@example.com',
             'password': '1234'
